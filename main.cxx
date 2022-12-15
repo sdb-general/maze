@@ -27,6 +27,8 @@ int main(int argc, const char *argv[])
 
       ("sw", value<int>() -> default_value(1600), "Screen Width")
       ("sh", value<int>() -> default_value(900), "Screen Height")
+      ("bx", value<int>() -> default_value(40), "horiz blocks")
+      ("by", value<int>() -> default_value(40), "vert blocks")
 
       ;
 
@@ -48,6 +50,11 @@ SETTING CONFIGS ----------------------------------------------------------------
 
   const int screenWidth = vm["sw"].as<int>() ;
   const int screenHeight = vm["sh"].as<int>();
+
+  const int lXBlocks = vm["bx"].as<int>();
+  const int lYBlocks = vm["by"].as<int>();
+
+  
 
 
 /*
@@ -79,7 +86,7 @@ RENDERING ----------------------------------------------------------------------
 
 */
 
-  populateBlocks( lRenderer, 20, 10 );
+  populateBlocks( lRenderer, lXBlocks, lYBlocks );
 
   bool quit = false;
   while (quit == false){

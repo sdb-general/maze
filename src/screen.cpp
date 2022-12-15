@@ -3,7 +3,12 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
-	
+#include <chrono>
+#include <thread>
+#include <functional>
+#include <mutex>
+
+std::mutex mutex;
 
 void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXWidth, int aYWidth )
 {

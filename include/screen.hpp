@@ -4,3 +4,4 @@
 void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXWidth, int aYWidth );
 
 void populateBlocks( SDL_Renderer* aRenderer, int aBlocksX, int aBlocksY );
+
