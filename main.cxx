@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 // #include <assert.h>
-// #include "include/func.hpp"
+#include "include/screen.hpp"
 
 
 
@@ -57,37 +57,39 @@ SETTING   SCREEN ---------------------------------------------------------------
 */
 
 
-  // if(SDL_Init(SDL_INIT_VIDEO) != 0){
-  //   std::cout << "couldn't init\n"; return 1;
-  // }
-  // SDL_Window* screen = SDL_CreateWindow("mandelbrot",
-  //                                       SDL_WINDOWPOS_UNDEFINED,
-  //                                       SDL_WINDOWPOS_UNDEFINED,
-  //                                       screenWidth,screenHeight, 0);
-  // assert(screen);
-  // SDL_Renderer* lRenderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_SOFTWARE);
-  // assert(lRenderer);
+  if(SDL_Init(SDL_INIT_VIDEO) != 0){
+    std::cout << "couldn't init\n"; return 1;
+  }
+  SDL_Window* screen = SDL_CreateWindow("maze",
+                                        SDL_WINDOWPOS_UNDEFINED,
+                                        SDL_WINDOWPOS_UNDEFINED,
+                                        screenWidth,screenHeight, 0);
+  assert(screen);
+  SDL_Renderer* lRenderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_SOFTWARE);
+  assert(lRenderer);
   // SDL_SetRenderDrawColor(lRenderer, 86, 29, 94, 0xFF); 
-  // // SDL_SetRenderDrawColor(lRenderer, 0xFF, 0, 0, 255);
-  // // SDL_RenderClear(renderer);
-  // SDL_RenderPresent(lRenderer); //updates the window
+  SDL_SetRenderDrawColor(lRenderer, std::rand() % 256, std::rand() % 256, std::rand() % 256, 0xFF);
+  // SDL_RenderClear(lRenderer);
+  SDL_RenderPresent(lRenderer); //updates the window
   
+
 /*
 
 RENDERING -----------------------------------------------------------------------
 
 */
 
+  populateBlocks( lRenderer, 20, 10 );
 
-  // bool quit = false;
-  // while (quit == false){
-  //   while( SDL_PollEvent(&event) )
-  //   {
-  //     if (event.type == SDL_QUIT) quit = true;
-  //   }
-  // }
+  bool quit = false;
+  while (quit == false){
+    while( SDL_PollEvent(&event) )
+    {
+      if (event.type == SDL_QUIT) quit = true;
+    }
+  }
   
-  // SDL_DestroyWindow(screen);
-  // SDL_Quit();
-  // return 0;
+  SDL_DestroyWindow(screen);
+  SDL_Quit();
+  return 0;
 }
