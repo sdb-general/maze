@@ -86,7 +86,9 @@ RENDERING ----------------------------------------------------------------------
 
 */
 
-  populateBlocks( lRenderer, lXBlocks, lYBlocks );
+  // populateBlocks( lRenderer, lXBlocks, lYBlocks );
+  populateBlocksWithBoundaries( lRenderer, lXBlocks, lYBlocks );
+
 
   bool quit = false;
   while (quit == false){
