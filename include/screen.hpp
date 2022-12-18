@@ -38,8 +38,10 @@ void getNeighbour(std::pair<int, int>& aCurrent);
 
 bool validNeighbour(int aX, int aY);
 
-void renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock);
-void renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock1, std::pair<int, int> aBlock2);
+void renderFull ( std::pair<int, int> aBlock);
+void renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2);
+
+bool allVisited();
 
 
 //constructor

@@ -75,8 +75,8 @@ SETTING   SCREEN ---------------------------------------------------------------
   SDL_Renderer* lRenderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_SOFTWARE);
   assert(lRenderer);
   // SDL_SetRenderDrawColor(lRenderer, 86, 29, 94, 0xFF); 
-  SDL_SetRenderDrawColor(lRenderer, std::rand() % 256, std::rand() % 256, std::rand() % 256, 0xFF);
-  // SDL_RenderClear(lRenderer);
+  SDL_SetRenderDrawColor(lRenderer, 0, 0, 0, 0xFF);
+  SDL_RenderClear(lRenderer);
   SDL_RenderPresent(lRenderer); //updates the window
   
 
@@ -87,7 +87,12 @@ RENDERING ----------------------------------------------------------------------
 */
 
   // populateBlocks( lRenderer, lXBlocks, lYBlocks );
-  populateBlocksWithBoundaries( lRenderer, lXBlocks, lYBlocks );
+  // populateBlocksWithBoundaries( lRenderer, lXBlocks, lYBlocks );
+
+  std::cout << "address of renderer is " << lRenderer << "\n";
+
+  Maze m = {lXBlocks, lYBlocks, lRenderer};
+  m.rendermaze();
 
 
   bool quit = false;

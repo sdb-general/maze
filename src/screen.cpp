@@ -8,7 +8,6 @@
 
 void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXWidth, int aYWidth )
 {
-  // StopWatch s = {"rendering"};
   // SDL_SetRenderDrawColor(aRenderer, std::rand() % 256, std::rand() % 256, std::rand() % 256, 0xFF);
   SDL_SetRenderDrawColor(aRenderer, 255, 255, 255, 0xFF);
   //these will be fixed to be the screen width and height
@@ -23,8 +22,8 @@ void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXW
       // std::cout << widthIter << " " << heightIter << "\n";
     }    
   }
-  SDL_SetRenderDrawColor(aRenderer, 86, 29, 94, 0xFF);
-  // SDL_RenderPresent(aRenderer);
+  // SDL_SetRenderDrawColor(aRenderer, 86, 29, 94, 0xFF);
+  SDL_RenderPresent(aRenderer);
 }
 
 void populateBlocks( SDL_Renderer* aRenderer, int aBlocksX, int aBlocksY )
@@ -74,14 +73,25 @@ void populateBlocksWithBoundaries( SDL_Renderer* aRenderer, int aBlocksX, int aB
   SDL_RenderPresent(aRenderer);
 }
 
-void Maze::renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock)
+void Maze::renderFull ( std::pair<int, int> aBlock )
 {
   //render a block with boundaries
+  int lXindex = aBlock.first;
+  int lYindex = aBlock.second;
+
+  int lTopLeftX = mBoundaryWidth + lXindex * ( mBlockWidth + mBoundaryWidth );
+  int lTopLeftY = mBoundaryWidth + lYindex * ( mBlockHeight + mBoundaryWidth );
+
+  blockRender ( mRenderer, lTopLeftX, lTopLeftY, mBlockWidth, mBlockHeight );
 }
 
-void Maze::renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock1, std::pair<int, int> aBlock2)
+void Maze::renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2)
 {
   // perform same function as above but colour in the boundary
+  renderFull(aBlock1); renderFull(aBlock2);
+
+  //work out the top left corner of the boundary between them
+
 
 }
 
@@ -89,13 +99,12 @@ Maze::Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer) :
   mBlocksX{aBlocksX}, mBlocksY{aBlocksY}, mRenderer{aRenderer}
 {
   SDL_GetRendererOutputSize(mRenderer, &mScreenWidth, &mScreenHeight);
+  std::cout << "address of mRenderer is " << mRenderer << "\n";
   mBlockWidth = mScreenWidth / mBlocksX - 2 * mBoundaryWidth;
-  mBlockHeight = mScreenHeight / mBlocksY - 2 * mBlockHeight;
+  mBlockHeight = mScreenHeight / mBlocksY - 2 * mBoundaryWidth;
 
   //set mVisited
-  std::vector<std::vector<bool>> mVisited (
-  mBlocksX, std::vector<bool>(mBlocksY) 
-  );
+  mVisited = std::vector<std::vector<bool>> ( mBlocksX, std::vector<bool>(mBlocksY)); 
 
 }
 
@@ -131,6 +140,7 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
   if (!lPossibleNextSteps.size())
   {
     mStack.pop_back(); // before this line, aCurrent should match the top element on the stack
+
     aCurrent = mStack.back();
     return;
   }
@@ -143,6 +153,8 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
 
     //we can render a connection between the new aCurrent, at the location at the top of the stack
 
+    // TODO CHANGE THISTO USE THE FUNCTION THAT REMOVES BOUNDARY BETWEEN THEM
+    renderFull(aCurrent);
 
     //push this new location to the stack
     mStack.push_back(aCurrent);
@@ -150,11 +162,28 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
   }
 }
 
+bool Maze::allVisited()
+{
+  for (int i = 0; i < mBlocksX; i++)
+  for (int j = 0; j < mBlocksY; j++)
+  {
+    if (!mVisited[i][j]) return false;
+  }
+  return true;
+}
+
 void Maze::rendermaze()
 {
   StopWatch s = {"rendermaze"};
   
+  std::pair<int, int> lCurrent = {0,0};
+  mVisited[0][0] = 1;
+  mStack.push_back(lCurrent);
 
+  while (!allVisited())
+  {
+    //move on to next neighbour
+    getNeighbour(lCurrent);
+  }
   
-
 }
