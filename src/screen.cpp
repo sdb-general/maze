@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <iostream>
 
+// const int boundaryWidth = 1;
+
 void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXWidth, int aYWidth )
 {
   // StopWatch s = {"rendering"};
@@ -72,9 +74,30 @@ void populateBlocksWithBoundaries( SDL_Renderer* aRenderer, int aBlocksX, int aB
   SDL_RenderPresent(aRenderer);
 }
 
+void Maze::renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock)
+{
+  //render a block with boundaries
+}
+
+void Maze::renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock1, std::pair<int, int> aBlock2)
+{
+  // perform same function as above but colour in the boundary
+
+}
+
 Maze::Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer) : 
   mBlocksX{aBlocksX}, mBlocksY{aBlocksY}, mRenderer{aRenderer}
-{}
+{
+  SDL_GetRendererOutputSize(mRenderer, &mScreenWidth, &mScreenHeight);
+  mBlockWidth = mScreenWidth / mBlocksX - 2 * mBoundaryWidth;
+  mBlockHeight = mScreenHeight / mBlocksY - 2 * mBlockHeight;
+
+  //set mVisited
+  std::vector<std::vector<bool>> mVisited (
+  mBlocksX, std::vector<bool>(mBlocksY) 
+  );
+
+}
 
 bool Maze::validNeighbour(int aX, int aY)
 {
@@ -131,10 +154,6 @@ void Maze::rendermaze()
 {
   StopWatch s = {"rendermaze"};
   
-  //set mVisited
-  std::vector<std::vector<bool>> mVisited (
-  mBlocksX, std::vector<bool>(mBlocksY) 
-  );
 
   
 

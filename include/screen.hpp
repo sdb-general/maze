@@ -16,6 +16,14 @@ struct Maze
 int mBlocksX;
 int mBlocksY;
 
+int mBlockWidth;
+int mBlockHeight;
+
+int mScreenWidth;
+int mScreenHeight;
+
+const int mBoundaryWidth = 1;
+
 SDL_Renderer* mRenderer;
 
 std::deque< std::pair< const int, const int>> mStack;
@@ -29,6 +37,10 @@ void rendermaze();
 void getNeighbour(std::pair<int, int>& aCurrent);
 
 bool validNeighbour(int aX, int aY);
+
+void renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock);
+void renderFull ( SDL_Renderer* aRenderer, std::pair<int, int> aBlock1, std::pair<int, int> aBlock2);
+
 
 //constructor
 Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer);
