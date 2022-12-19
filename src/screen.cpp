@@ -23,7 +23,7 @@ void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXW
     }    
   }
   // SDL_SetRenderDrawColor(aRenderer, 86, 29, 94, 0xFF);
-  SDL_RenderPresent(aRenderer);
+  // SDL_RenderPresent(aRenderer);
 }
 
 void populateBlocks( SDL_Renderer* aRenderer, int aBlocksX, int aBlocksY )
@@ -180,10 +180,16 @@ void Maze::rendermaze()
   mVisited[0][0] = 1;
   mStack.push_back(lCurrent);
 
+  int updateEveryFrame = 0;
+
   while (!allVisited())
   {
     //move on to next neighbour
     getNeighbour(lCurrent);
+
+    if ((updateEveryFrame % 25) == 0) SDL_RenderPresent(mRenderer);
+
+    updateEveryFrame++;
   }
-  
+  SDL_RenderPresent(mRenderer);
 }
