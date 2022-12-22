@@ -102,19 +102,19 @@ void Maze::renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2
     int upper = std::max(aBlock1.second, aBlock2.second);
     //use the top left calculation for the one with the largest y coordinate
     lTopLeftX = mBoundaryWidth + aBlock1.first * ( mBlockWidth + mBoundaryWidth ) ;//-1 ; //move to the left to cover the boundary
-    lTopLeftY = mBoundaryWidth + upper * ( mBlockHeight + mBoundaryWidth ) - 1;
+    lTopLeftY = mBoundaryWidth + upper * ( mBlockHeight + mBoundaryWidth ) - mBoundaryWidth;
 
-    blockRender(mRenderer, lTopLeftX, lTopLeftY, mBlockWidth, 1 );
+    blockRender(mRenderer, lTopLeftX, lTopLeftY, mBlockWidth, mBoundaryWidth );
     return;
   }
   if (aBlock1.second == aBlock2.second) // they differ in second coordinate
   {
     int upper = std::max(aBlock1.first, aBlock2.first);
     //use the top left calculation for the one with the largest y coordinate
-    lTopLeftX = mBoundaryWidth + upper * ( mBlockWidth + mBoundaryWidth ) -1 ; //move to the left to cover the boundary
+    lTopLeftX = mBoundaryWidth + upper * ( mBlockWidth + mBoundaryWidth ) - mBoundaryWidth ; //move to the left to cover the boundary
     lTopLeftY = mBoundaryWidth + aBlock1.second * ( mBlockHeight + mBoundaryWidth ) ;// + 1;
 
-    blockRender(mRenderer, lTopLeftX, lTopLeftY, 1, mBlockHeight );
+    blockRender(mRenderer, lTopLeftX, lTopLeftY, mBoundaryWidth, mBlockHeight );
     return;
   }
 
@@ -151,16 +151,16 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
   std::vector<std::pair<int, int >> lPossibleNextSteps;
 
   //check north
-  if (validNeighbour(lCurrentX, lCurrentY - 1)) lPossibleNextSteps.push_back(std::make_pair(lCurrentX, lCurrentY - 1));
+  if (validNeighbour(lCurrentX, lCurrentY - 1)) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX, lCurrentY - 1));
 
   //check east
-  if (validNeighbour(lCurrentX + 1, lCurrentY )) lPossibleNextSteps.push_back(std::make_pair(lCurrentX + 1, lCurrentY ));
+  if (validNeighbour(lCurrentX + 1, lCurrentY )) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX + 1, lCurrentY ));
   
   //check south
-  if (validNeighbour(lCurrentX, lCurrentY + 1)) lPossibleNextSteps.push_back(std::make_pair(lCurrentX, lCurrentY + 1 ));
+  if (validNeighbour(lCurrentX, lCurrentY + 1)) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX, lCurrentY + 1 ));
   
   //check west
-  if (validNeighbour(lCurrentX - 1, lCurrentY )) lPossibleNextSteps.push_back(std::make_pair(lCurrentX - 1, lCurrentY ));
+  if (validNeighbour(lCurrentX - 1, lCurrentY )) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX - 1, lCurrentY ));
 
   //if there's no valid neighbours, modify aCurrent to be the top element from the stack and return
   //TODO check if this isn't just going to set it to the same value as before
@@ -217,7 +217,7 @@ void Maze::rendermaze()
     //move on to next neighbour
     getNeighbour(lCurrent);
 
-    if ((updateEveryFrame % 10) == 0) SDL_RenderPresent(mRenderer); //update every few operations
+    if ((updateEveryFrame % 5) == 0) SDL_RenderPresent(mRenderer); //update every few operations
 
     updateEveryFrame++;
   }

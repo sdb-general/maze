@@ -22,7 +22,7 @@ int mBlockHeight;
 int mScreenWidth;
 int mScreenHeight;
 
-const int mBoundaryWidth = 1;
+const int mBoundaryWidth = 2;
 
 SDL_Renderer* mRenderer;
 
