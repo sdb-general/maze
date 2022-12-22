@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
+
 // const int boundaryWidth = 1;
 
 void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXWidth, int aYWidth )
@@ -88,9 +89,35 @@ void Maze::renderFull ( std::pair<int, int> aBlock )
 void Maze::renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2)
 {
   // perform same function as above but colour in the boundary
-  renderFull(aBlock1); renderFull(aBlock2);
+  renderFull(aBlock1);//; renderFull(aBlock2);
+  // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+  int upper;
+  int lTopLeftX, lTopLeftY;
 
   //work out the top left corner of the boundary between them
+
+  if (aBlock1.first == aBlock2.first) // they differ in second coordinate
+  {
+    int upper = std::max(aBlock1.second, aBlock2.second);
+    //use the top left calculation for the one with the largest y coordinate
+    lTopLeftX = mBoundaryWidth + aBlock1.first * ( mBlockWidth + mBoundaryWidth ) ;//-1 ; //move to the left to cover the boundary
+    lTopLeftY = mBoundaryWidth + upper * ( mBlockHeight + mBoundaryWidth ) - 1;
+
+    blockRender(mRenderer, lTopLeftX, lTopLeftY, mBlockWidth, 1 );
+    return;
+  }
+  if (aBlock1.second == aBlock2.second) // they differ in second coordinate
+  {
+    int upper = std::max(aBlock1.first, aBlock2.first);
+    //use the top left calculation for the one with the largest y coordinate
+    lTopLeftX = mBoundaryWidth + upper * ( mBlockWidth + mBoundaryWidth ) -1 ; //move to the left to cover the boundary
+    lTopLeftY = mBoundaryWidth + aBlock1.second * ( mBlockHeight + mBoundaryWidth ) ;// + 1;
+
+    blockRender(mRenderer, lTopLeftX, lTopLeftY, 1, mBlockHeight );
+    return;
+  }
+
 
 
 }
@@ -100,8 +127,8 @@ Maze::Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer) :
 {
   SDL_GetRendererOutputSize(mRenderer, &mScreenWidth, &mScreenHeight);
   std::cout << "address of mRenderer is " << mRenderer << "\n";
-  mBlockWidth = mScreenWidth / mBlocksX - 2 * mBoundaryWidth;
-  mBlockHeight = mScreenHeight / mBlocksY - 2 * mBoundaryWidth;
+  mBlockWidth = mScreenWidth / mBlocksX - mBoundaryWidth;
+  mBlockHeight = mScreenHeight / mBlocksY - mBoundaryWidth;
 
   //set mVisited
   mVisited = std::vector<std::vector<bool>> ( mBlocksX, std::vector<bool>(mBlocksY)); 
@@ -148,13 +175,15 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
   else //choose one of the elements from the possibilities
   {
     aCurrent = lPossibleNextSteps.at(std::rand() % lPossibleNextSteps.size());
+
     //mark this place as visited
     mVisited[aCurrent.first][aCurrent.second] = true;
 
     //we can render a connection between the new aCurrent, at the location at the top of the stack
 
     // TODO CHANGE THISTO USE THE FUNCTION THAT REMOVES BOUNDARY BETWEEN THEM
-    renderFull(aCurrent);
+    renderFull(aCurrent, mStack.back());
+    // renderFull(aCurrent);
 
     //push this new location to the stack
     mStack.push_back(aCurrent);
@@ -183,11 +212,12 @@ void Maze::rendermaze()
   int updateEveryFrame = 0;
 
   while (!allVisited())
+  // while (!mStack.empty())
   {
     //move on to next neighbour
     getNeighbour(lCurrent);
 
-    if ((updateEveryFrame % 25) == 0) SDL_RenderPresent(mRenderer);
+    if ((updateEveryFrame % 10) == 0) SDL_RenderPresent(mRenderer); //update every few operations
 
     updateEveryFrame++;
   }

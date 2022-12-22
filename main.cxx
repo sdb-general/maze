@@ -27,8 +27,8 @@ int main(int argc, const char *argv[])
 
       ("sw", value<int>() -> default_value(1600), "Screen Width")
       ("sh", value<int>() -> default_value(900), "Screen Height")
-      ("bx", value<int>() -> default_value(40), "horiz blocks")
-      ("by", value<int>() -> default_value(40), "vert blocks")
+      ("bx", value<int>() -> default_value(160), "horiz blocks")
+      ("by", value<int>() -> default_value(90), "vert blocks")
 
       ;
 
