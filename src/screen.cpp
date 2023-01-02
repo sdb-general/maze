@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <queue>
 
 
 // const int boundaryWidth = 1;
@@ -265,3 +266,25 @@ Block::Block(int& aX, int& aY):
 Block::Block(std::pair<int, int>& aCoords) :
   Block(aCoords.first, aCoords.second)
 {}
+
+/*
+
+  MAZE SOVING STUFF
+
+*/
+
+
+//SOLVER FUNCTION THAT RETURNS AN ORDERED LIST OF BLOCKS
+//MAKE IT A MAZE MEMBER FUNCTION SO THAT WE HAVE ACCESS TO EVERYTHING
+//WE ALREADY WORKED OUT 
+
+std::vector<Block> Maze::aStarSolver(std::pair<int, int>& aStart, std::pair<int, int>& aGoal)
+{
+  //lambda to calc estimate of distance to cover
+  auto heuristic = [](std::pair<int, int> aStart, std::pair<int, int> aEnd){ return (aEnd.first - aStart.first) + (aEnd.second - aStart.second); };
+
+  //create openset, and 
+  std::priority_queue<Block> lOpenSet;
+  // blocks.insert( Block(aStart) );
+}
+

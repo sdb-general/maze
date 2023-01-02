@@ -69,6 +69,8 @@ public:
 
   std::map< std::pair<int,int>, Block > mMazeRep;
 
+  std::vector<Block> aStarSolver(std::pair<int, int>& aStart, std::pair<int, int>& aGoal);
+
   //constructor
   Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer);
 
