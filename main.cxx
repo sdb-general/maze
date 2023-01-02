@@ -94,6 +94,14 @@ RENDERING ----------------------------------------------------------------------
   Maze m = {lXBlocks, lYBlocks, lRenderer};
   m.rendermaze();
 
+  // std::cout << m.mMazeRep.size() << " is the size of our maze rep\n";
+
+  // for (auto& block : m.mMazeRep)
+  // {
+
+  //   std::cout << block.second.mNeighbours.size() << "is the number of neighbours for this blokc\n";
+  // }
+
 
   bool quit = false;
   while (quit == false){
