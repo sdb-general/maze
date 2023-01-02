@@ -207,6 +207,9 @@ void Maze::rendermaze()
   mVisited[0][0] = 1;
   mStack.push_back(lCurrent);
 
+  //create a block for 0,0
+  mMazeRep.insert( { lCurrent, Block(lCurrent) } );
+
   int updateEveryFrame = 0;
 
   while (!allVisited())
@@ -228,3 +231,14 @@ Block::Block(const int& aX, const int& aY, Block* aPrevious):
 {}
 
 
+Block::Block(std::pair<const int, const int>& aCoords, Block* aPrevious) :
+  Block(aCoords.first, aCoords.second, aPrevious)
+{}
+
+Block::Block(int& aX, int& aY):
+  mX{aX}, mY{aY}//, mNeighbours{aPrevious}
+{}
+
+Block::Block(std::pair<int, int>& aCoords) :
+  Block(aCoords.first, aCoords.second)
+{}

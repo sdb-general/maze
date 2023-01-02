@@ -12,8 +12,13 @@ void populateBlocksWithBoundaries( SDL_Renderer* aRenderer, int aBlocksX, int aB
 
 struct Block
 {
-  //constuctor with coordinates
+  //constuctors with coordinates
   Block(const int& aX, const int& aY, Block* aPrevious);
+  Block(std::pair<const int, const int>& aCoords, Block* aPrevious);
+
+  //constructor just for 0,0
+  Block( int& aX, int& aY);
+  Block(std::pair<int, int>& aCoords);
 
   //coordinates of our block location
   //useful to have, even though we will store
