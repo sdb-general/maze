@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <deque>
+#include <map>
 
 void blockRender( SDL_Renderer* aRenderer, int aTopLeftX, int aTopLeftY, int aXWidth, int aYWidth );
 
@@ -9,43 +10,62 @@ void populateBlocks( SDL_Renderer* aRenderer, int aBlocksX, int aBlocksY );
 
 void populateBlocksWithBoundaries( SDL_Renderer* aRenderer, int aBlocksX, int aBlocksY );
 
-
-struct Maze
+struct Block
 {
+  //constuctor with coordinates
+  Block(const int& aX, const int& aY, Block* aPrevious);
 
-int mBlocksX;
-int mBlocksY;
+  //coordinates of our block location
+  //useful to have, even though we will store
+  //the coords as the keys in a std::map 
+  const int mX;
+  const int mY;
 
-int mBlockWidth;
-int mBlockHeight;
+  //list of neighbours we can move to
+  std::vector <Block*> mNeighbours; 
 
-int mScreenWidth;
-int mScreenHeight;
+  //to add: some member functions to modify this list
+};
 
-const int mBoundaryWidth = 2;
+class Maze
+{
+public:
 
-SDL_Renderer* mRenderer;
+  int mBlocksX;
+  int mBlocksY;
 
-std::deque< std::pair< const int, const int>> mStack;
-// std::deque< std::pair< int, int>> mStack;
+  int mBlockWidth;
+  int mBlockHeight;
 
-std::vector<std::vector<bool>> mVisited;
+  int mScreenWidth;
+  int mScreenHeight;
 
-void rendermaze();
+  const int mBoundaryWidth = 2;
 
-//gets neighbour if one exists, or pops one off the stack
-void getNeighbour(std::pair<int, int>& aCurrent);
+  SDL_Renderer* mRenderer;
 
-bool validNeighbour(int aX, int aY);
+  std::deque< std::pair< const int, const int>> mStack;
 
-void renderFull ( std::pair<int, int> aBlock);
-void renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2);
+  std::vector<std::vector<bool>> mVisited;
 
-bool allVisited();
+  void rendermaze();
 
+  //gets neighbour if one exists, or pops one off the stack
+  void getNeighbour(std::pair<int, int>& aCurrent);
 
-//constructor
-Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer);
+  bool validNeighbour(int aX, int aY);
+
+  void renderFull ( std::pair<int, int> aBlock);
+  void renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2);
+
+  bool allVisited();
+
+  std::map< std::pair<int,int>, Block > mMazeRep;
+
+  //constructor
+  Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer);
 
 
 };
+
+

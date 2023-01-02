@@ -221,3 +221,10 @@ void Maze::rendermaze()
   }
   SDL_RenderPresent(mRenderer);
 }
+
+//construct block with coords and default neighbour
+Block::Block(const int& aX, const int& aY, Block* aPrevious):
+  mX{aX}, mY{aY}, mNeighbours{aPrevious}
+{}
+
+
