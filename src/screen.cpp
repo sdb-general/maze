@@ -148,6 +148,8 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
   int lCurrentX = aCurrent.first;
   int lCurrentY = aCurrent.second;
 
+  std::pair<int, int> lPrevious = aCurrent;
+
   std::vector< std::pair< int, int > > lPossibleNextSteps;
 
   //check north
@@ -177,6 +179,9 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
     //choose one of the elements from the possibilities
     aCurrent = lPossibleNextSteps.at(std::rand() % lPossibleNextSteps.size());
 
+    //continue building representation of the maze
+    modifyBlockList(lPrevious, aCurrent);
+
     //mark this place as visited
     mVisited[aCurrent.first][aCurrent.second] = true;
 
@@ -187,6 +192,11 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
     mStack.push_back(aCurrent);
     return;
   }
+}
+
+void Maze::modifyBlockList(std::pair<int, int> aPrevious, std::pair<int, int> aCurrent)
+{
+
 }
 
 bool Maze::allVisited()

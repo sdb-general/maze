@@ -65,6 +65,8 @@ public:
 
   bool allVisited();
 
+  void modifyBlockList(std::pair<int, int> aPrevious, std::pair<int, int> aCurrent);
+
   std::map< std::pair<int,int>, Block > mMazeRep;
 
   //constructor
