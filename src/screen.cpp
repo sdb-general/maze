@@ -196,6 +196,19 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
 
 void Maze::modifyBlockList(std::pair<int, int> aPrevious, std::pair<int, int> aCurrent)
 {
+  //get pointer to previous block
+  Block* lPreviousBlockPtr = &( mMazeRep.at( aPrevious ) );
+
+  // create a new block for the newly minted coord
+  Block lNewBlock = {aCurrent.first, aCurrent.second, lPreviousBlockPtr};
+
+  //modify the old block - amend its neighbour list
+  
+  // mMazeRep.at( aPrevious ) -> mNeighbours.push_back( &lNewBlock );
+  mMazeRep.at( aPrevious ).mNeighbours.push_back( &lNewBlock );
+
+  //add the newly minted block to our maze representation
+  mMazeRep.insert( { aCurrent, lNewBlock } );
 
 }
 
