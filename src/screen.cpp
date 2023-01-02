@@ -107,7 +107,7 @@ void Maze::renderFull ( std::pair<int, int> aBlock1, std::pair<int, int> aBlock2
     blockRender(mRenderer, lTopLeftX, lTopLeftY, mBlockWidth, mBoundaryWidth );
     return;
   }
-  if (aBlock1.second == aBlock2.second) // they differ in second coordinate
+  if (aBlock1.second == aBlock2.second) // they differ in first coordinate
   {
     int upper = std::max(aBlock1.first, aBlock2.first);
     //use the top left calculation for the one with the largest y coordinate
@@ -126,12 +126,12 @@ Maze::Maze(int aBlocksX, int aBlocksY, SDL_Renderer* aRenderer) :
   mBlocksX{aBlocksX}, mBlocksY{aBlocksY}, mRenderer{aRenderer}
 {
   SDL_GetRendererOutputSize(mRenderer, &mScreenWidth, &mScreenHeight);
-  std::cout << "address of mRenderer is " << mRenderer << "\n";
+  // std::cout << "address of mRenderer is " << mRenderer << "\n";
   mBlockWidth = mScreenWidth / mBlocksX - mBoundaryWidth;
   mBlockHeight = mScreenHeight / mBlocksY - mBoundaryWidth;
 
   //set mVisited
-  mVisited = std::vector<std::vector<bool>> ( mBlocksX, std::vector<bool>(mBlocksY)); 
+  mVisited = std::vector<std::vector<bool>> ( mBlocksX, std::vector<bool>(mBlocksY) ); 
 
 }
 
@@ -148,16 +148,16 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
   int lCurrentX = aCurrent.first;
   int lCurrentY = aCurrent.second;
 
-  std::vector<std::pair<int, int >> lPossibleNextSteps;
+  std::vector< std::pair< int, int > > lPossibleNextSteps;
 
   //check north
-  if (validNeighbour(lCurrentX, lCurrentY - 1)) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX, lCurrentY - 1));
+  if (validNeighbour(lCurrentX, lCurrentY - 1 )) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX, lCurrentY - 1));
 
   //check east
   if (validNeighbour(lCurrentX + 1, lCurrentY )) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX + 1, lCurrentY ));
   
   //check south
-  if (validNeighbour(lCurrentX, lCurrentY + 1)) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX, lCurrentY + 1 ));
+  if (validNeighbour(lCurrentX, lCurrentY + 1 )) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX, lCurrentY + 1 ));
   
   //check west
   if (validNeighbour(lCurrentX - 1, lCurrentY )) lPossibleNextSteps.emplace_back(std::make_pair(lCurrentX - 1, lCurrentY ));
@@ -172,18 +172,16 @@ void Maze::getNeighbour( std::pair<int, int>& aCurrent )
     return;
   }
 
-  else //choose one of the elements from the possibilities
+  else 
   {
+    //choose one of the elements from the possibilities
     aCurrent = lPossibleNextSteps.at(std::rand() % lPossibleNextSteps.size());
 
     //mark this place as visited
     mVisited[aCurrent.first][aCurrent.second] = true;
 
     //we can render a connection between the new aCurrent, at the location at the top of the stack
-
-    // TODO CHANGE THISTO USE THE FUNCTION THAT REMOVES BOUNDARY BETWEEN THEM
     renderFull(aCurrent, mStack.back());
-    // renderFull(aCurrent);
 
     //push this new location to the stack
     mStack.push_back(aCurrent);
